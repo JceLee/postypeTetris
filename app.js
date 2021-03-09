@@ -1,3 +1,5 @@
-import Game from "./src/Tetris";
+import Tetris from "./src/Tetris.js";
 
-const app = new Tetris(document.querySelector(".app"));
+const app = new Tetris(document.querySelector("#app"));
+
+app.startGame();
