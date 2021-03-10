@@ -1,6 +1,6 @@
 import { BoardSize } from "../constants/boardSize.js";
 
-export default class Block {
+export default class SquareBlock {
   constructor(ctx) {
     this.ctx = ctx;
     this.shape = [
@@ -28,8 +28,7 @@ export default class Block {
     } else if (direction === "right") {
       this.position.x += 1;
     } else {
-      this.potision.y += 1;
+      this.position.y += 1;
     }
-    this.render();
   }
 }
