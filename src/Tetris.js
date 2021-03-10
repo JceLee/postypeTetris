@@ -26,10 +26,19 @@ export default class Tetris {
   }
 
   getMousePosition(positionX) {
-    if (positionX < this.activeBlock.position.x) {
+    if (positionX < this.activeBlock.position.x && !this.detect(true)) {
       this.activeBlock.move("left");
-    } else if (positionX > this.activeBlock.position.x + this.activeBlock.shape.length) {
+    } else if (
+      positionX > this.activeBlock.position.x + this.activeBlock.shape.length &&
+      !this.detect(false)
+    ) {
       this.activeBlock.move("right");
     }
+  }
+
+  detect(isLeft) {
+    return isLeft
+      ? this.gameBoard.gameBoard[this.activeBlock.position.y][this.activeBlock.position.x - 1]
+      : this.gameBoard.gameBoard[this.activeBlock.position.y][this.activeBlock.position.x + 1];
   }
 }

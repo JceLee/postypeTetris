@@ -1,10 +1,8 @@
 import { BoardSize } from "../constants/boardSize.js";
 
-export default class SquareBlock {
-  constructor(ctx, boardState) {
+export default class Block {
+  constructor(ctx) {
     this.ctx = ctx;
-    this.boardState = boardState;
-    this.color = "#ff9393";
     this.shape = [
       [1, 1],
       [1, 1],
@@ -14,7 +12,7 @@ export default class SquareBlock {
 
   render() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.ctx.fillStyle = this.color;
+    this.ctx.fillStyle = "#ff9393";
     this.shape.forEach((row, idxY) => {
       row.forEach((value, idxX) => {
         if (value === 1) {
