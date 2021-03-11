@@ -2,6 +2,7 @@ import { BoardSize } from "./constants/boardSize.js";
 import GameBoard from "./components/GameBoard.js";
 import SquareBlock from "./components/SquareBlock.js";
 import ScoreBoard from "./components/ScoreBoard.js";
+import GameOverModal from "./components/GameOverModal.js";
 
 export default class Tetris {
   constructor(canvas) {
@@ -15,6 +16,7 @@ export default class Tetris {
     this.activeBlock = new SquareBlock(this.ctx);
     this.second = 0;
     this.frame = 500;
+    this.modal = new GameOverModal();
     this.animation = null;
     this.gameState = {
       level: 1,
@@ -74,15 +76,19 @@ export default class Tetris {
 
   // 새로운 블럭을 생성합니다.
   spawnNewBlock() {
+    if (this.startGame.gameOver) return;
+    console.log("haha11112");
     this.gameState.score += this.gameBoard.freeze(this.activeBlock);
     this.activeBlock = new SquareBlock(this.ctx);
-    if (!this.checkGameOver()) return this.gameOver();
+    if (!this.checkGameOver()) {
+      this.startGame.gameOver = true;
+      return this.gameOver();
+    }
     this.scoreBoard.updateBoard(this.gameState);
   }
 
   // 게임이 끝났는지 확인합니다.
   checkGameOver() {
-    if (this.startGame.gameOver) return this.gameOver();
     const { x, y } = this.activeBlock.position;
 
     return this.activeBlock.shape.every((row, idxY) => {
@@ -94,7 +100,7 @@ export default class Tetris {
 
   // 게임이 끝났을 경우 게임오버 메세지를 띄웁니다.
   gameOver() {
-    this.gameBoard.gameOver();
+    this.modal.showModal();
   }
 
   // 블럭이 계속 드랍되게 합니다.
