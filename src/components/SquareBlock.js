@@ -8,6 +8,7 @@ export default class SquareBlock {
     this.position = { x: 4, y: 0 };
   }
 
+  // 위치가 변경된 블럭을 그려줍니다.
   render() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.fillStyle = "#ff9393";
@@ -20,6 +21,7 @@ export default class SquareBlock {
     });
   }
 
+  // 블럭의 위치를 변경합니다.
   move(direction) {
     if (direction === "left") {
       this.position.x -= 1;

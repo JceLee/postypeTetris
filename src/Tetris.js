@@ -18,6 +18,7 @@ export default class Tetris {
     };
   }
 
+  // 초기 마우스 클릭에 따라 블럭을 움직일 수 있게 이벤트 리스너를 줍니다.
   startGame() {
     this.ctx.canvas.width = BoardSize.width * BoardSize.size;
     this.ctx.canvas.height = BoardSize.height * BoardSize.size;
@@ -31,6 +32,7 @@ export default class Tetris {
     this.drop(-1);
   }
 
+  // 이벤트 리스너에 따라 어느쪽으로 움직일지를 결정합니다.
   move(positionX) {
     if (positionX < this.activeBlock.position.x && this.detect("left")) {
       this.activeBlock.move("left");
@@ -45,11 +47,13 @@ export default class Tetris {
     this.render();
   }
 
+  // 새로운 블럭이 생성될 때마다 다시 그려줍니다.
   render() {
     this.activeBlock.render();
     this.gameBoard.render();
   }
 
+  // 가려는 곳이 갈 수 있는 곳인지를 체크 합니다.
   detect(direction) {
     const { x, y } = this.activeBlock.position;
     return this.activeBlock.shape.every((row, idxY) => {
@@ -66,13 +70,38 @@ export default class Tetris {
     });
   }
 
+  // 새로운 블럭을 생성합니다.
   spawnNewBlock() {
     this.gameState.score += this.gameBoard.freeze(this.activeBlock);
     this.activeBlock = new SquareBlock(this.ctx);
+    if (!this.checkGameOver()) return this.gameOver();
     this.scoreBoard.updateBoard(this.gameState);
   }
 
-  drop(lastTime) {
+  // 게임이 끝났는지 확인합니다.
+  checkGameOver() {
+    const { x, y } = this.activeBlock.position;
+    console.log("haha");
+    return this.activeBlock.shape.every((row, idxY) => {
+      return row.every((value, idxX) => {
+        return this.gameBoard.grid[y + idxY][x + idxX] !== 1;
+      });
+    });
+  }
+
+  // 게임이 끝났을 경우 게임오버 메세지를 띄웁니다.
+  gameOver() {
+    this.activeBlock === null;
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(1, 3, 8, 1.2);
+    this.ctx.font = "1px Arial";
+    this.ctx.fillStyle = "red";
+    this.ctx.fillText("GAME OVER", 1.8, 4);
+  }
+
+  // 블럭이 계속 드랍되게 합니다.
+  drop(lastTime = 0) {
     const curTime = new Date().getTime();
     const diff = curTime - lastTime;
 
@@ -80,7 +109,6 @@ export default class Tetris {
       this.move("down");
       lastTime = curTime;
     }
-
     requestAnimationFrame(() => {
       this.drop(lastTime);
     });
