@@ -1,6 +1,6 @@
 export default class ScoreBoard {
   init() {
-    document.getElementById("scoreBoard").style.display = "block";
+    document.getElementById("level").textContent = "1";
   }
 
   //점수판을 업데이트 합니다.
