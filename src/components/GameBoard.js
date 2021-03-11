@@ -46,4 +46,12 @@ export default class GameBoard {
     });
     return lines;
   }
+
+  gameOver() {
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(1, 3, 8, 1.2);
+    this.ctx.font = "1px Arial";
+    this.ctx.fillStyle = "red";
+    this.ctx.fillText("GAME OVER", 1.8, 4);
+  }
 }
