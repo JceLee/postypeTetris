@@ -61,20 +61,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    
-    height: 70%;
-    width: 30%;
-    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    font-size: 30px;
     background-color: var(--background);
     color: var(--text-color);
 
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-
-    font-size: 30px;
 }
 
 .modal-title {

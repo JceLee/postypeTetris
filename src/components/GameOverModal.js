@@ -11,7 +11,6 @@ export default class GameOverModal {
 
   toggleModal() {
     this.isVisible = !this.isVisible;
-
     const modal = document.querySelector(".modal-wrapper");
     modal.classList.toggle("hidden");
   }
@@ -34,29 +33,15 @@ export default class GameOverModal {
     const modalContents = document.createElement("section");
     modalContents.className = "modal-contents";
 
-    const modalHeader = document.createElement("header");
-    modalHeader.className = "modal-header";
-
     const modalTitle = document.createElement("p");
     modalTitle.className = "modal-title";
     modalTitle.innerText = "GameOver";
 
-    const closeBtn = document.createElement("span");
-    closeBtn.className = "close-btn";
-    closeBtn.innerText = "X";
-
-    closeBtn.addEventListener("click", () => {
-      this.onClose();
-    });
     overlay.addEventListener("click", () => {
       this.onClose();
     });
 
-    modalHeader.appendChild(modalTitle);
-    modalHeader.appendChild(closeBtn);
-
-    modalContents.appendChild(modalHeader);
-
+    modalContents.appendChild(modalTitle);
     this.modalWrapper.appendChild(overlay);
     this.modalWrapper.appendChild(modalContents);
   }
