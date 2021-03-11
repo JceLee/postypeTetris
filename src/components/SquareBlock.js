@@ -1,5 +1,3 @@
-import { BoardSize } from "../constants/boardSize.js";
-
 export default class SquareBlock {
   constructor(ctx) {
     this.ctx = ctx;

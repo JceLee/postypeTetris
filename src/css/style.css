@@ -1,3 +1,19 @@
 #app {
+    font-family: "Montserrat", sans-serif;
+    margin: 0 auto;
+}
+
+#gameBoard {
     border: solid 2px black;
+}
+
+#scoreBoard {
+    margin: 0 auto;
+    text-align: center;
+    display: none;
+}
+
+.state {
+    margin: 10px 90px;
+    display: inline-block;
 }

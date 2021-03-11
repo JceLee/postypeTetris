@@ -1,27 +1,32 @@
 import { BoardSize } from "./constants/boardSize.js";
 import GameBoard from "./components/GameBoard.js";
 import SquareBlock from "./components/SquareBlock.js";
+import ScoreBoard from "./components/ScoreBoard.js";
 
 export default class Tetris {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
-    this.ctx.canvas.width = BoardSize.width * BoardSize.size;
-    this.ctx.canvas.height = BoardSize.height * BoardSize.size;
-    this.ctx.scale(BoardSize.size, BoardSize.size);
     this.gameBoard = new GameBoard(this.ctx);
+    this.scoreBoard = new ScoreBoard();
     this.activeBlock = new SquareBlock(this.ctx);
     this.second = 0;
     this.frame = 500;
-
-    this.canvas.addEventListener("click", (e) => {
-      e.preventDefault();
-      // console.log(this.gameBoard.grid);
-      this.move(e.offsetX / BoardSize.size);
-    });
+    this.gameState = {
+      level: 1,
+      score: 0,
+    };
   }
 
   startGame() {
+    this.ctx.canvas.width = BoardSize.width * BoardSize.size;
+    this.ctx.canvas.height = BoardSize.height * BoardSize.size;
+    this.ctx.scale(BoardSize.size, BoardSize.size);
+    this.canvas.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.move(e.offsetX / BoardSize.size);
+    });
+    this.scoreBoard.init();
     this.activeBlock.render();
     this.drop(-1);
   }
@@ -34,8 +39,8 @@ export default class Tetris {
       this.detect("right")
     ) {
       this.activeBlock.move("right");
-    } else {
-      this.detect("down") ? this.activeBlock.move("down") : this.spawnNewBlock();
+    } else if (this.detect("down")) {
+      this.activeBlock.move("down");
     }
     this.render();
   }
@@ -49,9 +54,8 @@ export default class Tetris {
     const { x, y } = this.activeBlock.position;
     return this.activeBlock.shape.every((row, idxY) => {
       return row.every((value, idxX) => {
-        if (y + idxY === BoardSize.height - 1) return this.spawnNewBlock();
-        console.log("1: ", y + idxY < BoardSize.height);
-        console.log("2: ", value === 0, this.gameBoard.grid[y + idxY + 1][x + idxX] === 0);
+        if (y + idxY === BoardSize.height - 1 || this.gameBoard.grid[y + idxY + 1][x + idxX] === 1)
+          return this.spawnNewBlock();
         return direction === "down"
           ? y + idxY < BoardSize.height &&
               (value === 0 || this.gameBoard.grid[y + idxY + 1][x + idxX] === 0)
@@ -63,9 +67,9 @@ export default class Tetris {
   }
 
   spawnNewBlock() {
-    console.log(this.gameBoard.grid);
-    console.log(this.gameBoard.freeze(this.activeBlock));
+    this.gameState.score += this.gameBoard.freeze(this.activeBlock);
     this.activeBlock = new SquareBlock(this.ctx);
+    this.scoreBoard.updateBoard(this.gameState);
   }
 
   drop(lastTime) {
